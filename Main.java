@@ -207,31 +207,27 @@ class Suduko
       
       
       solutions = 0;
-      do
-      {
-         for(int i = 0; i < possvals[a][ind2].length; i += 1)
+      for(int i = 0; i < possvals[a][ind2].length; i += 1)
          {
             y[a][b][c] = possvals[a][ind2][i];
+            try
+            {
             loopednumbers(y);
-            if(compareArray(y,x) == true)
+            }catch(StackOverflowError e)
             {
-               copyArray(w,y);
-               continue;
+               continue
             }
-            else if(compareArray(y,x) == false)
-            {
-               copyArray(w,y);
-            }
+            copyArray(w,y);
+            
          }
-      }while(solutions <= 1);
       if(solutions == 1)
       {
-         y[a][b][c] = 0;
+         w[a][b][c] = 0;
          copyArray(w,y);
       }
       else
       {
-         y[a][b][c] = w[a][b][c];
+         copyArray(w,y);
       }
       
       return;    
@@ -242,7 +238,7 @@ class Suduko
    {
       //boolean solvable = true;
       copyArray(y,w);
-      for(int i = 0; i < 500; i += 1)
+      for(int i = 0; i < 250; i += 1)
       {
          int row = rand.nextInt(9);
          int bigCol = rand.nextInt(3);
@@ -256,11 +252,12 @@ class Suduko
          }
          
          checkValueLevI(row, bigCol, lilCol);
-         //checkValueLevII(row, bigCol, lilCol);
+         copyArray(y,w);
+         checkValueLevII(row, bigCol, lilCol);
          
       
       }
-      loopednumbers(w);
+      //loopednumbers(w);
       //copyArray(y,w);
       printBoard(w);
       //loopednumbers(y);
